@@ -1,40 +1,43 @@
-const LINKS_STORAGE_KEY = 'imparables_links';
-const DEFAULT_LINKS = [
-  {
-    name: 'Tiktok',
-    url: 'https://www.tiktok.com/@imparables_pedro_moncayo',
-    image: 'img/items/tiktok_item.png'
-  },
-  {
-    name: 'Instagram',
-    url: 'https://www.instagram.com/imparablespedromoncayo/',
-    image: 'img/items/instagram_item.png'
-  },
-  {
-    name: 'Facebook',
-    url: 'https://www.facebook.com/people/Imparables-Pedro-Moncayo/61591576433954/',
-    image: 'img/items/faceook_item.png'
-  }
-];
+const DATA_STORAGE_KEY = 'imparables_data';
+const DEFAULT_DATA = {
+  visits: 0,
+  links: [
+    {
+      name: 'Tiktok',
+      url: 'https://www.tiktok.com/@imparables_pedro_moncayo',
+      image: 'img/items/tiktok_item.png'
+    },
+    {
+      name: 'Instagram',
+      url: 'https://www.instagram.com/imparablespedromoncayo/',
+      image: 'img/items/instagram_item.png'
+    },
+    {
+      name: 'Facebook',
+      url: 'https://www.facebook.com/people/Imparables-Pedro-Moncayo/61591576433954/',
+      image: 'img/items/faceook_item.png'
+    }
+  ]
+};
 
-function saveLinks(links) {
+function saveData(data) {
   try {
-    localStorage.setItem(LINKS_STORAGE_KEY, JSON.stringify(links));
+    localStorage.setItem(DATA_STORAGE_KEY, JSON.stringify(data));
   } catch (error) {
     console.warn('No se pudo guardar localStorage', error);
   }
 }
 
-function loadLinksFromStorage() {
+function loadDataFromStorage() {
   try {
-    const raw = localStorage.getItem(LINKS_STORAGE_KEY);
+    const raw = localStorage.getItem(DATA_STORAGE_KEY);
     return raw ? JSON.parse(raw) : null;
   } catch (error) {
     return null;
   }
 }
 
-async function fetchLinksJson() {
+async function fetchDataJson() {
   try {
     const response = await fetch('data/links.json');
     if (!response.ok) {
@@ -46,20 +49,20 @@ async function fetchLinksJson() {
   }
 }
 
-async function getLinks() {
-  const cached = loadLinksFromStorage();
-  if (Array.isArray(cached) && cached.length) {
+async function getData() {
+  const cached = loadDataFromStorage();
+  if (cached && typeof cached === 'object' && Array.isArray(cached.links)) {
     return cached;
   }
 
-  const fetched = await fetchLinksJson();
-  if (Array.isArray(fetched) && fetched.length) {
-    saveLinks(fetched);
+  const fetched = await fetchDataJson();
+  if (fetched && typeof fetched === 'object' && Array.isArray(fetched.links)) {
+    saveData(fetched);
     return fetched;
   }
 
-  saveLinks(DEFAULT_LINKS);
-  return DEFAULT_LINKS;
+  saveData(DEFAULT_DATA);
+  return DEFAULT_DATA;
 }
 
 function renderLinks(links) {
@@ -93,6 +96,13 @@ function showMessage(message) {
   list.innerHTML = `<li class="text-center text-muted py-4">${message}</li>`;
 }
 
+function updateVisitCount(count) {
+  const counter = document.getElementById('visit-count');
+  if (counter) {
+    counter.textContent = String(count);
+  }
+}
+
 async function loadHtmlComponent(url, targetId) {
   const placeholder = document.getElementById(targetId);
   if (!placeholder) {
@@ -111,11 +121,32 @@ async function loadHtmlComponent(url, targetId) {
 
 async function loadComponents() {
   await loadHtmlComponent('header.html', 'site-head');
+  await loadHtmlComponent('menu.html', 'site-menu');
   await loadHtmlComponent('footer.html', 'site-footer');
   if (window.location.pathname.endsWith('/nav.html') || window.location.pathname.endsWith('nav.html')) {
     const navButton = document.getElementById('nav-button');
     if (navButton) {
       navButton.style.display = 'none';
+    }
+  }
+}
+
+async function initPage() {
+  const data = await getData();
+  const hasBanner = document.getElementById('visit-count');
+  if (hasBanner) {
+    data.visits = (Number(data.visits) || 0) + 1;
+    saveData(data);
+    updateVisitCount(data.visits);
+  }
+
+  const list = document.querySelector('.links-list');
+  if (list) {
+    const links = Array.isArray(data.links) ? data.links : [];
+    if (links.length) {
+      renderLinks(links);
+    } else {
+      showMessage('No se encontraron enlaces.');
     }
   }
 }
@@ -152,5 +183,5 @@ window.addEventListener('DOMContentLoaded', async () => {
   if (document.querySelector('.loader-screen')) {
     setTimeout(hideLoader, 700);
   }
-  initNavPage();
+  await initPage();
 });
