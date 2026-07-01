@@ -172,21 +172,6 @@ img {
   font-size: 1rem;
 }
 
-.menu-visits {
-  min-width: 120px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.5rem;
-  color: #ffffff;
-  text-align: left;
-}
-
-.menu-visits .visits-label,
-#visit-count {
-  color: #ffffff !important;
-}
-
 .menu-image {
   max-width: 220px;
 }

@@ -23,8 +23,10 @@ const DEFAULT_DATA = {
 function saveData(data) {
   try {
     localStorage.setItem(DATA_STORAGE_KEY, JSON.stringify(data));
+    return true;
   } catch (error) {
     console.warn('No se pudo guardar localStorage', error);
+    return false;
   }
 }
 
@@ -96,13 +98,6 @@ function showMessage(message) {
   list.innerHTML = `<li class="text-center text-muted py-4">${message}</li>`;
 }
 
-function updateVisitCount(count) {
-  const counter = document.getElementById('visit-count');
-  if (counter) {
-    counter.textContent = String(count);
-  }
-}
-
 async function loadHtmlComponent(url, targetId) {
   const placeholder = document.getElementById(targetId);
   if (!placeholder) {
@@ -131,14 +126,15 @@ async function loadComponents() {
   }
 }
 
+function incrementVisitCount(data) {
+  data.visits = (Number(data.visits) || 0) + 1;
+  saveData(data);
+  return data.visits;
+}
+
 async function initPage() {
   const data = await getData();
-  const hasBanner = document.getElementById('visit-count');
-  if (hasBanner) {
-    data.visits = (Number(data.visits) || 0) + 1;
-    saveData(data);
-    updateVisitCount(data.visits);
-  }
+  incrementVisitCount(data);
 
   const list = document.querySelector('.links-list');
   if (list) {
