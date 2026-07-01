@@ -1,0 +1,233 @@
+:root {
+  color-scheme: light;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  background-color: #faf9f7;
+  color: #1f2937;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body.page-body {
+  margin: 0;
+  background: linear-gradient(180deg, #ffffff 0%, #f7f5f1 100%);
+  color: #1b1b1f;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.loader-screen {
+  position: fixed;
+  inset: 0;
+  background: rgba(25, 25, 28, 0.95);
+  z-index: 999;
+  color: #f8f8f8;
+}
+
+.loader-ring {
+  width: 80px;
+  height: 80px;
+  border: 8px solid rgba(255, 255, 255, 0.18);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loader-text {
+  margin-top: 18px;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.main-container {
+  min-height: 100vh;
+  padding: 1rem 1rem;
+  opacity: 0;
+  transition: opacity 0.35s ease-in-out;
+}
+
+.main-container.visible {
+  opacity: 1;
+}
+
+.profile-card,
+.links-card,
+.page-body main > .p-4 {
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: 24px;
+}
+
+.profile-card {
+  max-width: 640px;
+}
+
+.profile-avatar,
+.intro-image {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border: 6px solid rgba(255, 255, 255, 0.9);
+}
+
+.social-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.links-card {
+  max-width: 720px;
+  width: 100%;
+  margin-top: 0;
+}
+
+.nav-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nav-page .links-card {
+  margin-top: 1rem;
+}
+
+.site-head + .links-card,
+.site-head + .links-card .links-card {
+  margin-top: 0;
+}
+
+.site-head {
+  width: 100%;
+  padding: 0.5rem 0 0.625rem !important; /* 48px - 15px top, and smaller bottom gap */
+}
+
+.site-head .head-card {
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0 1rem 0;
+  margin: 0 auto;
+  max-width: 760px;
+}
+
+.site-head .intro-image {
+  display: block;
+  margin: 0 auto 1.5rem;
+}
+
+.content-separator {
+  width: 100%;
+  max-width: 720px;
+  border: none;
+  border-top: 1px solid rgba(31, 41, 55, 0.12);
+  margin: 0.625rem 0;
+}
+
+.links-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.links-list li {
+  width: 100%;
+  max-width: 720px;
+  background: rgba(247, 244, 240, 0.96);
+  border-radius: 20px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.links-list li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(37, 47, 77, 0.08);
+}
+
+.link-item {
+  align-items: center;
+}
+
+.link-entry {
+  justify-content: center;
+}
+
+.link-body {
+  min-width: 0;
+  text-align: center;
+}
+
+.link-body strong {
+  display: block;
+  font-size: 1rem;
+}
+
+.link-body {
+  min-width: 0;
+}
+
+.link-body strong {
+  display: block;
+  font-size: 1rem;
+}
+
+.item-icon {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+}
+
+.link-item a {
+  color: #1f2937;
+  text-decoration: none;
+}
+
+.link-item a:hover {
+  color: #0d6efd;
+}
+
+.site-footer {
+  background: transparent;
+  color: #4b5563;
+  font-size: 0.95rem;
+}
+
+.site-footer a {
+  color: #0d6efd;
+}
+
+@media (max-width: 575.98px) {
+  .profile-avatar,
+  .intro-image {
+    width: 140px;
+    height: 140px;
+  }
+
+  .social-logo {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
