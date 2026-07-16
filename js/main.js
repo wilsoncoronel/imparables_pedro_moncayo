@@ -16,6 +16,11 @@ const DEFAULT_DATA = {
       name: 'Facebook',
       url: 'https://www.facebook.com/people/Imparables-Pedro-Moncayo/61591576433954/',
       image: 'img/items/faceook_item.png'
+    },
+    {
+      name: "X",
+      url: "https://x.com/ImparablesPM",
+      image: "img/items/x_item.png"
     }
   ]
 };
@@ -175,6 +180,11 @@ async function initNavPage() {
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
+  try {
+    localStorage.removeItem(DATA_STORAGE_KEY);
+  } catch (e) {
+    console.warn('No se pudo limpiar localStorage', e);
+  }
   await loadComponents();
   if (document.querySelector('.loader-screen')) {
     setTimeout(hideLoader, 700);
